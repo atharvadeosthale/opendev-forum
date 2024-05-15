@@ -8,10 +8,12 @@ export default function Page() {
   const { resolvedTheme } = useTheme();
 
   return (
-    <SignUp
-      appearance={resolvedTheme === "dark" ? { baseTheme: dark } : undefined}
-      signInUrl="/signin"
-      path="/signup"
-    />
+    <div className="h-[50rem] w-full flex items-center justify-center">
+      <SignUp
+        appearance={resolvedTheme === "dark" ? { baseTheme: dark } : undefined}
+        signInUrl="/signin"
+        path="/signup"
+      />
+    </div>
   );
 }
