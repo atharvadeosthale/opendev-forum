@@ -30,6 +30,12 @@ export default async function PostPage({ params }: { params: { id: string } }) {
   async function postAnswer(event: FormData) {
     "use server";
 
+    // Check if user authenticated, deal with not case later as that
+    // would be a direct API call, not a priority.
+    if (!userId) return;
+
+    if (!event.get("content") || event.get("content") === "") return;
+
     const newAnswer = await db
       .insert(answers)
       .values({
@@ -47,7 +53,11 @@ export default async function PostPage({ params }: { params: { id: string } }) {
       <QuestionCard post={postData[0]} />
       <form action={postAnswer} className="flex flex-col mt-5 gap-3">
         <Textarea name="content" placeholder="Answer this question..." />
-        <Button type="submit">Submit Answer</Button>
+        <Button type="submit" disabled={!userId}>
+          {!userId
+            ? "You need to be logged in to submit an answer!"
+            : "Submit Answer"}
+        </Button>
       </form>
       {answersData.length === 0 ? (
         <div className="text-center mt-5 text-gray-400">No answers yet.</div>
